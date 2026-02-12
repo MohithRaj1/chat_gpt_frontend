@@ -1,0 +1,44 @@
+:root {
+    /* Colors */
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #131313;
+    --bg-tertiary: #1f1f1f;
+    --text-primary: #ffffff;
+    --text-secondary: #ababab;
+    --accent-color: #10a37f;
+    --accent-hover: #1a7f64;
+    --border-color: #2a2a2a;
+    --error-color: #ef4146;
+    --success-color: #10a37f;
+
+    /* Inputs */
+    --input-bg: #40414f;
+    --input-border: #303139;
+    /* Hidden by default in chatgpt but useful for accessibility */
+
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font-size-base: 16px;
+    --font-size-sm: 14px;
+    --font-size-xs: 12px;
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* Transitions */
+    --transition-speed: 0.2s;
+}
+
+[data-theme='light'] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7f7f8;
+    --bg-tertiary: #ececf1;
+    --text-primary: #343541;
+    --text-secondary: #6e6e80;
+    --input-bg: #ffffff;
+    --border-color: #d9d9e3;
+}

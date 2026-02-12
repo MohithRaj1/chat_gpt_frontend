@@ -1,102 +1,111 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "../styles/auth.css";
+
 const Signup = () => {
-  // Matches the JSON keys required by your API
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-
-  const [status, setStatus] = useState({
-    loading: false,
-    error: null,
-    success: false
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus({ loading: true, error: null, success: false });
+    setError("");
+    setMessage("");
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/signup', {
-        method: 'POST',
+      const response = await fetch("http://127.0.0.1:8000/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-
       const data = await response.json();
-      setStatus({ loading: false, error: null, success: true });
-      console.log('Success:', data);
-    } catch (err) {
-      setStatus({ loading: false, error: err.message, success: false });
+
+      if (response.ok) {
+        setMessage("Signup successful ✅");
+      } else {
+        setError(data.detail || "Signup failed ❌");
+      }
+    } catch (error) {
+      setError("Server error ❌");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full p-8 bg-white shadow-lg rounded-xl">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Create Account</h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              required
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              placeholder="name@company.com"
-              value={formData.email}
-              onChange={handleChange}
-            />
+    <div className="auth-container">
+      <div className="auth-background-gradient"></div>
+      <div className="auth-content">
+        <div className="auth-card">
+          <div className="auth-header">
+            <div className="auth-logo">✨</div>
+            <h2 className="auth-title">Create Account</h2>
+            <p className="auth-subtitle">Join us today</p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              name="password"
-              required
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              placeholder="••••••••"
-              value={formData.password}
-              onChange={handleChange}
-            />
+          {error && (
+            <div className="auth-alert auth-alert-error">
+              <span>⚠️</span> {error}
+            </div>
+          )}
+
+          {message && (
+            <div className="auth-alert auth-alert-success">
+              <span>✅</span> {message}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="auth-form-group">
+              <label className="auth-label">Email</label>
+              <div className="auth-input-wrapper">
+                <input
+                  type="email"
+                  placeholder="example@gmail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="auth-input"
+                />
+              </div>
+            </div>
+
+            <div className="auth-form-group">
+              <label className="auth-label">Password</label>
+              <div className="auth-input-wrapper">
+                <input
+                  type="password"
+                  placeholder="Enter strong password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="auth-input"
+                />
+              </div>
+            </div>
+
+            <button type="submit" className="auth-button">
+              Sign Up
+            </button>
+          </form>
+
+          <div className="auth-divider">
+            <span>OR</span>
           </div>
 
-          <button
-            type="submit"
-            disabled={status.loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none disabled:bg-blue-300"
-          >
-            {status.loading ? 'Processing...' : 'Sign Up'}
-          </button>
-        </form>
+          <Link to="/login" className="auth-link-button">
+            Already have an account? Login
+          </Link>
 
-        {status.error && (
-          <div className="mt-4 p-2 bg-red-100 text-red-700 text-sm rounded text-center">
-            {status.error}
+          <div className="auth-footer">
+            By signing up, you agree to our Terms of Service and Privacy Policy.
           </div>
-        )}
-
-        {status.success && (
-          <div className="mt-4 p-2 bg-green-100 text-green-700 text-sm rounded text-center">
-            Signup successful!
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

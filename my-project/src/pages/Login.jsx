@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/auth.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,10 +29,7 @@ const Login = () => {
       localStorage.setItem("token_type", token_type);
 
       alert("Login successful!");
-      console.log(response.data);
-
-      // Redirect if needed
-      // window.location.href = "/dashboard";
+      navigate("/");
 
     } catch (err) {
       console.error(err);
@@ -40,61 +40,71 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
-        </h2>
-      </div>
+    <div className="auth-container">
+      <div className="auth-background-gradient"></div>
+      <div className="auth-content">
+        <div className="auth-card">
+          <div className="auth-header">
+            <div className="auth-logo">✨</div>
+            <h2 className="auth-title">Welcome Back</h2>
+            <p className="auth-subtitle">Sign in to continue</p>
+          </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow-xl rounded-2xl">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Email address
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="you@example.com"
-              />
+          {error && (
+            <div className="auth-alert auth-alert-error">
+              <span>⚠️</span> {error}
+            </div>
+          )}
+
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <div className="auth-form-group">
+              <label className="auth-label">Email address</label>
+              <div className="auth-input-wrapper">
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="auth-input"
+                  placeholder="you@example.com"
+                />
+              </div>
             </div>
 
-            {/* Password */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="••••••••"
-              />
+            <div className="auth-form-group">
+              <label className="auth-label">Password</label>
+              <div className="auth-input-wrapper">
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="auth-input"
+                  placeholder="••••••••"
+                />
+              </div>
             </div>
 
-            {/* Error Message */}
-            {error && (
-              <p className="text-red-500 text-sm text-center">{error}</p>
-            )}
-
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition"
+              className="auth-button"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
+
+          <div className="auth-divider">
+            <span>OR</span>
+          </div>
+
+          <Link to="/signup" className="auth-link-button">
+            Don't have an account? Sign up
+          </Link>
+
+          <div className="auth-footer">
+            Secure login with end-to-end encryption.
+          </div>
         </div>
       </div>
     </div>
